@@ -1,0 +1,37 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Start by looking in the folder "Project docs". Does it seem we have started the project?
+
+If we have not started the project, set up the project:
+Start of SET UP PROJECT
+Make sure we have a git repo connected. If not, suggest a name for the repo and create it. Connect the project to git. 
+
+Then analyse the PRD.
+Make a plan for the entire solution including architecture.
+Present that plan to the product owner and get it signed off.
+Store that plan as a document in a folder "Project docs"
+Create a backlog document and store it.
+Create agile style stories in a folder "Project docs/Stories TODO" to make sure we describe all features of the solution.
+Add the id / header of all stories to the backlog.
+Sort them according to priority to deliver the PRD with the least technical risk.
+Create a skeleton MVP of the solution. If there are any API:s / endpoints, start with that. Otherwise try to make interfaces so we get a good architecture where things are loosely coupled.
+END OF SET UP PROJECT
+
+If project is setup, select the story that is highest priority.
+
+Given that you have read the story:
+Read the plan document. Read the PRD in root.
+Are there any unclear things? Anything you want to make sure first? Any information that would be good to have? Nice to have? Ask the product owner and make sure you understand what to do 100%. 
+Then: 
+Make a plan for this story.
+Create tests first.
+Then write code that solves the story.
+run tests. if errors, fix. 
+When done, sign off with the product owner.
+
+If you have any questions, ask the product owner (the user).
+
+
