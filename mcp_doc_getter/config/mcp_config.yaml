@@ -18,6 +18,16 @@ extraction:
     - "footer"
     - "nav"
     
+conversion:
+  include_metadata: true
+  html2text_options:
+    body_width: 0
+    unicode_snob: true
+    tables: true
+    single_line_break: true
+  code_block_style: "fenced"  # Options: fenced, indented
+  table_style: "pipe"  # Options: pipe, grid
+    
 output:
   base_dir: "MCP_DOCS"
   file_prefix: "MCP_"
