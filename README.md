@@ -1,6 +1,32 @@
-# MCP Documentation Scraper
+# DocHarvester
 
-A Python-based web scraper that downloads and stores documentation from ModelContextProtocol.io (and other sites) into Markdown files for offline reference.
+A Python-based web scraper that downloads and stores documentation from different sites like https://modelcontextprotocol.io or https://docs.pydantic.dev/latest/ into Markdown files for offline reference.
+DocHarvester
+A versatile Python tool for scraping technical documentation websites and converting them to local Markdown files. DocHarvester makes offline documentation access seamless for developers who want to enhance their coding workflow with AI assistants like Cursor or Claude Code.
+🌟 Features
+
+Download complete documentation from technical frameworks and libraries
+Convert HTML documentation to clean, well-formatted Markdown
+Preserve link structure, code blocks, tables, and other formatting
+Configurable for any documentation site with YAML-based configuration
+Built-in support for ModelContextProtocol.io and other AI frameworks
+Respects rate limits and robots.txt for ethical scraping
+Easily extensible to support new documentation sources
+
+🚀 Use cases
+
+Create local documentation caches for offline development
+Build custom knowledge bases for AI coding assistants
+Generate reference material for team onboarding
+Archive documentation versions for backwards compatibility
+
+🛠️ Built with
+
+Python 3.9+
+UV package manager
+BeautifulSoup4
+Rich for beautiful CLI output
+Configurable architecture using YAML
 
 ## Features
 
