@@ -11,10 +11,10 @@ import logging
 import sys
 from pathlib import Path
 
-import yaml
+# Import the ConfigManager from its package
+from mcp_doc_getter.src.config_manager import ConfigManager
 
 # These imports will be implemented as the project progresses
-# from mcp_doc_getter.src.config_manager import ConfigManager
 # from mcp_doc_getter.src.web_crawler import WebCrawler
 # from mcp_doc_getter.src.content_extractor import ContentExtractor
 # from mcp_doc_getter.src.markdown_converter import MarkdownConverter
@@ -60,19 +60,6 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def load_config(config_path: str) -> dict:
-    """Load configuration from YAML file."""
-    try:
-        with open(config_path, "r") as f:
-            return yaml.safe_load(f)
-    except FileNotFoundError:
-        logging.error(f"Configuration file not found: {config_path}")
-        sys.exit(1)
-    except yaml.YAMLError as e:
-        logging.error(f"Error parsing configuration file: {e}")
-        sys.exit(1)
-
-
 def main() -> None:
     """Main entry point for the scraper."""
     args = parse_args()
@@ -81,12 +68,11 @@ def main() -> None:
     logging.info("Starting MCP Documentation Scraper")
     
     try:
-        config = load_config(args.config)
-        logging.info(f"Loaded configuration from {args.config}")
+        # Use the ConfigManager instead of directly loading the YAML
+        config_manager = ConfigManager(args.config)
+        logging.info(f"Configuration loaded and validated from {args.config}")
         
         # This section will be implemented as the project progresses
-        # config_manager = ConfigManager(config)
-        # error_handler = setup_error_handling(config)
         # web_crawler = WebCrawler(config_manager)
         # content_extractor = ContentExtractor(config_manager)
         # markdown_converter = MarkdownConverter(config_manager)
