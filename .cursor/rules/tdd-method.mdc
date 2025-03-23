@@ -20,18 +20,48 @@ Sort them according to priority to deliver the PRD with the least technical risk
 Create a skeleton MVP of the solution. If there are any API:s / endpoints, start with that. Otherwise try to make interfaces so we get a good architecture where things are loosely coupled.
 END OF SET UP PROJECT
 
-If project is setup, select the story that is highest priority.
+If you get the instruction to continu developing the project:
+START CONTINUE DEVELOP PRODUCT.
+
+If project is setup, check if there is a story in "Stories DOING". If so, continue on it. 
+Else: select the story that is highest priority.
 
 Given that you have read the story:
 Read the plan document. Read the PRD in root.
+
 Are there any unclear things? Anything you want to make sure first? Any information that would be good to have? Nice to have? Ask the product owner and make sure you understand what to do 100%. 
 Then: 
+Move the story to "Stories DOING".
 Make a plan for this story.
 Create tests first.
 Then write code that solves the story.
 run tests. if errors, fix. 
-When done, sign off with the product owner.
+When done, sign off with the product owner. 
+move the story to "Stories DONE"
+If you need any installs, remember to add to pyproject.
+
+Update the backlog accordingly. 
 
 If you have any questions, ask the product owner (the user).
+END OF CONTINUE DEVELOP PRODUCT.
+
+if you get the instruction to refactor the project:
+START REFACTOR PROJECT:
+Read the PRD.
+Read the project docs. 
+Did the PO (user) specify a certain story or feature the refactor or is it a general refactoring?
+Does the architecture plan accurately describe the needs according to the PRD? Do we need to update the plan? Ask the PO if you want guidance.
+Look at the tests. Does the tests cover the funcitonality in stories that are DOING and DONE? Are the tests relevant? Can we make them better? If we can, do that.
+Run the tests. Do they pass? if not, why? Discuss with PO if needed.
+Look at the code for the project. Is the project docs correct in how it describes where code is stored, how it is structured.
+Is the code really well documented? we want it to be super clear and refer to PRD and project plan docs. If not, fix.
+Is the structure of the code the best? Are there good alternatives? If that is the case, propose to PO. If PO agrees to you proposal, refactor this project accordingly.
+:END REFACTOR PROJECT
+
+
+
+
+
+
 
 
