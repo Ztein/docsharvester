@@ -6,9 +6,9 @@ This document tracks all features and tasks needed to implement the Documentatio
 ## Stories
 Sorted by priority (highest to lowest):
 
-1. **STORY-001**: Project Setup and Configuration Framework
-2. **STORY-002**: Basic Web Crawler Implementation
-3. **STORY-003**: HTML Content Extraction
+1. ~~**STORY-001**: Project Setup and Configuration Framework~~ (COMPLETED)
+2. ~~**STORY-002**: Basic Web Crawler Implementation~~ (COMPLETED)
+3. **STORY-003**: HTML Content Extraction (NEXT)
 4. **STORY-004**: HTML to Markdown Conversion
 5. **STORY-005**: File System Operations
 6. **STORY-006**: Link Handler Implementation
@@ -20,13 +20,18 @@ Sorted by priority (highest to lowest):
 12. **STORY-012**: Documentation and Usage Guide
 
 ## Technical Dependencies
-- **STORY-001** must be completed before any other stories
+- ~~**STORY-001** must be completed before any other stories~~ (COMPLETED)
 - **STORY-002** through **STORY-007** can be worked on in parallel after **STORY-001**
 - **STORY-008** depends on **STORY-001** through **STORY-007**
 - **STORY-009** depends on **STORY-008**
 - **STORY-010** depends on **STORY-009**
 - **STORY-011** can begin after **STORY-009**
 - **STORY-012** should be completed last
+
+## Progress Tracking
+- **Completed**: STORY-001, STORY-002
+- **In Progress**: None
+- **Pending**: STORY-003, STORY-004, STORY-005, STORY-006, STORY-007, STORY-008, STORY-009, STORY-010, STORY-011, STORY-012
 
 ## Risks and Mitigations
 - **Rate limiting and site policies**: Implement respectful crawling to avoid IP bans
