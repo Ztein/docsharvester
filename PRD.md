@@ -1,5 +1,6 @@
 Product Requirements Document (PRD)
-Project: Documentation Scraper for AI Frameworks
+Project: Documentation Scraper for AI Frameworks, product name: DocHarvest
+github repo on: 
 1. Project Overview
 1.1 Purpose
 Develop a Python-based web scraper that downloads and stores documentation from ModelContextProtocol.io into Markdown files for offline reference. The program should be designed to be easily adaptable for other documentation sites (such as Pydantic AI) to facilitate "vibe coding" in development environments like Cursor or Claude Code.
