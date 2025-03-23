@@ -183,8 +183,11 @@ class FileSystemManager:
         # Remove file extension if present
         path = Path(path).stem
 
-        # Replace slashes with underscores
+        # Replace slashes with underscores and sanitize path
         path = path.replace("/", "_")
+        
+        # Sanitize by removing special characters
+        path = re.sub(r'[^a-zA-Z0-9_\-]', '', path)
 
         # Apply naming convention
         naming_convention = self.output_config.get(
