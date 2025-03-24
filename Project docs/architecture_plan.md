@@ -1,7 +1,7 @@
-# Documentation Scraper for AI Frameworks - Architecture Plan
+# DocHarvester - Universal Documentation Scraper Architecture Plan
 
 ## Overview
-This project aims to develop a Python-based web scraper that downloads and stores documentation from ModelContextProtocol.io into Markdown files for offline reference. The scraper is designed to be adaptable for other documentation sites.
+This project aims to develop a Python-based web scraper that downloads and stores documentation from various websites (including ModelContextProtocol.io and Pydantic AI) into Markdown files for offline reference. The scraper is designed to be adaptable for different documentation sites through configuration.
 
 ## System Architecture
 
@@ -65,7 +65,7 @@ This project aims to develop a Python-based web scraper that downloads and store
 ## Project Structure
 
 ```
-mcp_doc_getter/
+docharvester/
 ├── config/
 │   ├── mcp_config.yaml     # ModelContextProtocol.io configuration
 │   └── pydantic_config.yaml # Example additional site configuration
@@ -83,7 +83,7 @@ mcp_doc_getter/
 │   ├── test_config_manager.py
 │   ├── test_web_crawler.py
 │   └── ... (tests for each component)
-├── MCP_DOCS/               # Output directory for MCP documentation
+├── MCP_DOCS/               # Output directory example for MCP documentation
 ├── .gitignore
 ├── README.md
 ├── pyproject.toml          # Project metadata and dependencies

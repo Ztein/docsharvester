@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-MCP Documentation Scraper - Main Entry Point
+DocHarvester - Universal Documentation Scraper
 
-This module serves as the main entry point for the MCP documentation scraper.
+This module serves as the main entry point for the DocHarvester universal documentation scraper.
 It orchestrates the scraping process using the various components.
 """
 
@@ -33,14 +33,14 @@ def setup_logging(log_level: str = "INFO") -> None:
     logging.basicConfig(
         level=numeric_level,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.StreamHandler(), logging.FileHandler("mcp_scraper.log")],
+        handlers=[logging.StreamHandler(), logging.FileHandler("docharvester.log")],
     )
 
 
 def parse_args() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="Scrape documentation from ModelContextProtocol.io and convert to Markdown"
+        description="DocHarvester - Universal Documentation Scraper that converts web documentation to Markdown"
     )
     parser.add_argument(
         "--config",
@@ -68,7 +68,7 @@ def main() -> None:
     args = parse_args()
     setup_logging(args.log_level)
 
-    logging.info("Starting MCP Documentation Scraper")
+    logging.info("Starting DocHarvester Universal Documentation Scraper")
 
     try:
         # Use the ConfigManager instead of directly loading the YAML

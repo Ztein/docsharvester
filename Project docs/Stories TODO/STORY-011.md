@@ -1,40 +1,38 @@
-# STORY-011: Performance Optimization
+# STORY-011: Additional Site Configuration (Pydantic AI)
 
 ## Description
-As a user, I need the scraper to operate efficiently and handle large documentation sites without excessive resource usage or time.
+As a user, I need the scraper to be configured and tested for an additional documentation site (Pydantic AI) to demonstrate its adaptability.
 
 ## Acceptance Criteria
-- Implements performance optimizations for CPU, memory, and network usage
-- Adds optional parallel processing for faster execution
-- Implements caching mechanisms to avoid redundant downloads
-- Optimizes HTML parsing and Markdown conversion
-- Maintains efficiency with large documentation sites
-- Provides performance metrics and monitoring
-- Allows for configuration of performance parameters
+- Creates specific configuration for Pydantic AI documentation
+- Verifies the core framework works with minimal site-specific changes
+- Identifies correct CSS selectors for Pydantic AI content extraction
+- Handles any site-specific HTML structure or elements
+- Produces well-formatted Markdown from Pydantic AI documentation
+- Demonstrates the reusability of the core framework
 
 ## Technical Notes
-- Consider using asyncio for asynchronous operations
-- Implement connection pooling for HTTP requests
-- Use efficient data structures for tracking and processing
-- Consider using LRU cache for frequently accessed data
-- Balance between performance and respectful website crawling
+- Analyze the Pydantic AI website structure
+- Determine optimal selectors for content extraction
+- Identify any special cases that require custom handling
+- Leverage existing components with minimal modifications
+- Create a clear process for adapting to new sites
 
 ## Tasks
-1. Analyze performance bottlenecks in the current implementation
-2. Implement HTTP connection pooling
-3. Add optional parallel processing for independent operations
-4. Create caching mechanisms for network and processing operations
-5. Optimize memory usage for large sites
-6. Implement performance metrics collection
-7. Add performance-related configuration options
-8. Conduct performance testing and benchmarking
-9. Document performance characteristics and configuration
+1. Analyze Pydantic AI website structure
+2. Create Pydantic AI-specific configuration file
+3. Identify and test optimal CSS selectors
+4. Adapt any core components if needed
+5. Test extraction on representative sample pages
+6. Fine-tune Markdown conversion for Pydantic AI documentation
+7. Verify link handling for Pydantic AI internal references
+8. Conduct limited end-to-end testing
+9. Document the process of adapting to a new site
 
 ## Definition of Done
-- Scraper processes large documentation sites efficiently
-- Performance metrics show significant improvement over baseline
-- Memory usage remains stable during long-running operations
-- Caching reduces redundant operations
-- Optional parallel processing improves throughput
-- Performance characteristics are documented
-- Configuration options allow for performance tuning 
+- Configuration successfully identifies Pydantic AI documentation pages
+- Content is correctly extracted from Pydantic AI pages
+- Converted Markdown maintains appropriate structure and formatting
+- Sample pages are processed successfully
+- Process for adapting to new sites is documented
+- Minimal core code changes were needed (demonstrating reusability) 

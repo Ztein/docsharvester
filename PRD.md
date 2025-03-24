@@ -1,175 +1,176 @@
-Product Requirements Document (PRD)
-Project: Documentation Scraper for AI Frameworks, product name: DocHarvest
-github repo on: 
-1. Project Overview
-1.1 Purpose
-Develop a Python-based web scraper that downloads and stores documentation from ModelContextProtocol.io into Markdown files for offline reference. The program should be designed to be easily adaptable for other documentation sites (such as Pydantic AI) to facilitate "vibe coding" in development environments like Cursor or Claude Code.
-1.2 Goals
+I'll update the PRD to make it more general, focusing on a flexible approach that works with various documentation sites, starting with a single URL.
 
-Create a reusable documentation scraper framework
-Download complete ModelContextProtocol.io documentation
-Convert HTML content to well-formatted Markdown
-Maintain link integrity within the saved documents
-Organize content in a structured file hierarchy
-Enable easy extension to other documentation sources
+# Product Requirements Document (PRD)
 
-2. Functional Requirements
-2.1 Core Functionality
+## Project: DocHarvester - Universal Documentation Scraper
 
-Website Crawling: Systematically traverse ModelContextProtocol.io to identify all documentation pages
-Content Extraction: Parse HTML content and extract meaningful documentation text
-Markdown Conversion: Convert HTML content to Markdown while preserving:
+### 1. Project Overview
 
-Headers and section structure
-Code blocks and syntax highlighting
-Tables
-Lists (ordered and unordered)
-Images (with appropriate references)
-Links (both internal and external)
+#### 1.1 Purpose
+Develop a flexible Python-based documentation scraper that can download technical documentation from any website starting from a single URL, convert it to Markdown format, and store it locally for offline use with AI coding assistants like Cursor or Claude Code.
 
+#### 1.2 Goals
+- Create a universal documentation scraper that works with minimal configuration
+- Enable users to start with just a single URL and extract all related documentation
+- Convert HTML documentation to well-formatted Markdown
+- Maintain navigation structure and link integrity
+- Require minimal site-specific configuration
+- Support immediate use cases (ModelContextProtocol.io and Pydantic AI)
+- Facilitate "vibe coding" by making documentation available offline
 
-File Storage: Save content to disk following the specified naming convention
-Configurability: Allow easy reconfiguration for other documentation sites
+### 2. Functional Requirements
 
-2.2 File Naming and Organization
+#### 2.1 Core Functionality
+- **URL-based Initialization**: Start crawling from a single user-provided URL
+- **Intelligent Crawling**: Automatically detect and follow documentation links within the same domain
+- **Boundary Detection**: Intelligently determine the boundaries of documentation content
+- **Content Extraction**: Identify and extract meaningful documentation text
+- **Markdown Conversion**: Convert HTML content to clean Markdown while preserving:
+  - Headers and section structure
+  - Code blocks and syntax highlighting
+  - Tables
+  - Lists (ordered and unordered)
+  - Images (with appropriate references)
+  - Links (both internal and external)
+- **File Storage**: Save content to disk using a sensible naming convention derived from page titles or URLs
+- **Minimal Configuration**: Work out-of-the-box with reasonable defaults
 
-Store all files in a "MCP_DOCS" directory
-Follow naming pattern: "MCP_[PAGE_NAME].md" (e.g., "MCP_INTRODUCTION.md", "MCP_CORE_ARCHITECTURE.md")
-Convert page titles to uppercase with underscores for spaces
-Maintain a logical hierarchy that reflects the website's structure
+#### 2.2 File Organization
+- Create a target directory named after the documentation source (configurable)
+- Generate filenames based on page titles or URL paths
+- Convert filenames to a consistent format (e.g., uppercase with underscores)
+- Create subdirectories that reflect the website's structure when appropriate
+- Include a metadata file that maps original URLs to local files
 
-2.3 Link Handling
+#### 2.3 Link Handling
+- Preserve all external links as-is
+- Convert internal links to relative paths that work locally
+- Handle anchor links appropriately
+- Create a link map for troubleshooting
 
-Preserve all external links as-is
-Convert internal links to relative paths that work locally
-Handle anchor links appropriately
+#### 2.4 Error Handling
+- Implement robust error handling for network issues
+- Log all errors and warnings
+- Skip problematic pages with appropriate notifications
+- Resume capability if the process is interrupted
 
-2.4 Error Handling
+### 3. Technical Specifications
 
-Implement robust error handling for network issues
-Log all errors and warnings
-Skip problematic pages with appropriate logging
-Resume capability if the process is interrupted
+#### 3.1 Technology Stack
+- Python 3.9+
+- UV package manager for dependency management
+- Libraries:
+  - BeautifulSoup4 or similar for HTML parsing
+  - Requests or httpx for HTTP requests
+  - Markdown or html2text for HTML to Markdown conversion
+  - PyYAML for optional configuration
 
-3. Technical Specifications
-3.1 Technology Stack
+#### 3.2 Architecture
+- Modular design with separate components for:
+  - Web crawling and discovery
+  - Content extraction
+  - Markdown conversion
+  - File I/O operations
+- Plugin system for site-specific customizations
+- Command-line interface with appropriate options
 
-Python 3.9+
-UV package manager for dependency management
-Libraries:
+#### 3.3 Performance Requirements
+- Respect website's robots.txt
+- Implement rate limiting to avoid overloading servers
+- Parallel processing with configurable concurrency limits
+- Caching mechanism to avoid redundant downloads
+- Support for resuming interrupted operations
 
-BeautifulSoup4 or similar for HTML parsing
-Requests or httpx for HTTP requests
-Markdown or html2text for HTML to Markdown conversion
-PyYAML for configuration
+### 4. User Interface
 
+#### 4.1 Command Line Interface
+```
+docsharvester crawl https://modelcontextprotocol.io/ --output-dir MCP_DOCS
+docsharvester crawl https://docs.pydantic.ai/ --output-dir PYDANTIC_DOCS
+```
 
+#### 4.2 Configuration Options
+- URL to start crawling from
+- Output directory name
+- Depth limit (how many links to follow)
+- Domain restrictions (stay within specific subdomains)
+- Concurrency settings
+- File naming patterns (optional)
+- Custom content selectors (optional)
 
-3.2 Architecture
+### 5. Implementation Plan
 
-Modular design with separate components for:
+#### 5.1 Project Setup
+1. Initialize Git repository
+2. Set up virtual environment using UV
+3. Create project structure
+4. Add initial documentation
 
-Web crawling
-Content extraction
-Markdown conversion
-File I/O operations
+#### 5.2 Development Phases
+1. **Phase 1: Core Engine**
+   - Implement base crawler with URL-based initialization
+   - Create content detection and extraction logic
+   - Build Markdown converter
+   - Develop file system handler
 
+2. **Phase 2: Intelligent Features**
+   - Implement boundary detection
+   - Add link conversion logic
+   - Create metadata tracking
+   - Build resumption capability
 
-Configuration-driven approach for easy adaptation to other sites
-Command-line interface with appropriate options
+3. **Phase 3: Testing with Target Sites**
+   - Test with ModelContextProtocol.io
+   - Test with Pydantic AI documentation
+   - Fine-tune general algorithms based on findings
+   - Implement minimal site-specific adjustments if needed
 
-3.3 Performance Requirements
+4. **Phase 4: Refinement**
+   - Improve error handling
+   - Optimize performance
+   - Add command-line interface polish
+   - Create comprehensive documentation
 
-Respect website's robots.txt
-Implement rate limiting to avoid overloading the server
-Parallel processing where appropriate
-Caching mechanism to avoid redundant downloads
+### 6. Customization Capabilities
 
-4. Implementation Plan
-4.1 Project Setup
+#### 6.1 Optional Configuration
+Allow for site-specific configuration through YAML files that can specify:
+- CSS selectors for main content
+- Patterns to include/exclude URLs
+- Special handling for particular content types
+- Custom filename patterns
 
-Initialize Git repository
-Set up virtual environment using UV
-Create project structure and configuration files
-Add initial documentation
+#### 6.2 Plugin System
+Design a simple plugin architecture that allows for:
+- Site-specific content extraction rules
+- Custom post-processing of Markdown
+- Special handling for specific documentation systems
 
-4.2 Development Phases
+### 7. Deliverables
 
-Phase 1: Core Framework
+- Fully functional Python package
+- GitHub repository with complete documentation
+- Command-line interface for easy usage
+- Sample configurations for ModelContextProtocol.io and Pydantic AI
+- Comprehensive README with usage instructions
+- Contribution guidelines for extending functionality
 
-Implement base crawler
-Create content extractor
-Build Markdown converter
-Develop file system handler
+### 8. Success Criteria
 
+- Successfully crawl and extract documentation from ModelContextProtocol.io and Pydantic AI
+- Generate well-formatted Markdown files that preserve the original content's meaning and structure
+- Create a sensible file hierarchy that reflects the documentation's organization
+- Require minimal configuration for new documentation sites
+- Maintain working links between downloaded files
 
-Phase 2: ModelContextProtocol.io Implementation
+### 9. Future Enhancements
 
-Configure crawler for ModelContextProtocol.io
-Test on subset of pages
-Implement site-specific parsing rules
-Fine-tune Markdown formatting
+- Web interface for monitoring and configuration
+- Auto-update feature to refresh documentation
+- Diff-based updates to only download changed content
+- Integration with search tools for local documentation
+- Direct integration with AI coding assistants
+- Support for authentication-protected documentation sites
+- Extraction of interactive elements as static examples
 
-
-Phase 3: Extension and Refinement
-
-Add configuration for additional sites (e.g., Pydantic AI)
-Improve error handling and recovery
-Optimize performance
-Add additional features based on testing feedback
-
-
-
-4.3 Testing Strategy
-
-Unit tests for each component
-Integration tests for end-to-end functionality
-Manual validation of output quality
-Comparative testing against original source
-
-5. Extension and Reusability
-5.1 Configuration Format
-Design a YAML configuration format that specifies:
-
-Base URL of documentation site
-URL patterns to include/exclude
-CSS selectors for content extraction
-Output directory structure
-File naming conventions
-Site-specific parsing rules
-
-5.2 Additional Sites
-Document the process for extending to new sites:
-
-Create new configuration file
-Specify site-specific selectors
-Add any custom parsing hooks if needed
-Test and iterate
-
-6. Deliverables
-
-Fully functional Python package
-GitHub repository with complete documentation
-Configuration file for ModelContextProtocol.io
-Sample configuration for at least one additional site (Pydantic AI)
-README with usage instructions
-Development guide for extending to new sites
-
-7. Success Criteria
-
-All documentation pages from ModelContextProtocol.io successfully downloaded
-Content accurately converted to Markdown with preserved formatting
-Links work correctly within the local file structure
-Code can be easily adapted to work with Pydantic AI documentation
-Repository is well-documented and maintainable
-
-8. Future Enhancements
-
-Auto-update feature to refresh documentation
-Diff-based updates to only download changed content
-Version tracking of documentation
-Search functionality within downloaded docs
-Integration with AI code assistants' APIs directly
-GUI for configuration and monitoring
-
-This PRD provides a comprehensive framework for your documentation scraper project, focusing on both the immediate needs for ModelContextProtocol.io and the flexibility to extend to other documentation sources in the future.
+This PRD outlines a flexible, user-friendly tool that starts with a simple URL and intelligently extracts documentation into a format ideal for offline use and AI-assisted development.

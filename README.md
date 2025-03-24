@@ -1,36 +1,37 @@
 # DocHarvester
 
 A Python-based web scraper that downloads and stores documentation from different sites like https://modelcontextprotocol.io or https://docs.pydantic.dev/latest/ into Markdown files for offline reference.
-DocHarvester
+
 A versatile Python tool for scraping technical documentation websites and converting them to local Markdown files. DocHarvester makes offline documentation access seamless for developers who want to enhance their coding workflow with AI assistants like Cursor or Claude Code.
-🌟 Features
 
-Download complete documentation from technical frameworks and libraries
-Convert HTML documentation to clean, well-formatted Markdown
-Preserve link structure, code blocks, tables, and other formatting
-Configurable for any documentation site with YAML-based configuration
-Built-in support for ModelContextProtocol.io and other AI frameworks
-Respects rate limits and robots.txt for ethical scraping
-Easily extensible to support new documentation sources
+## 🌟 Features
 
-🚀 Use cases
+- Download complete documentation from technical frameworks and libraries
+- Convert HTML documentation to clean, well-formatted Markdown
+- Preserve link structure, code blocks, tables, and other formatting
+- Configurable for any documentation site with YAML-based configuration
+- Built-in support for ModelContextProtocol.io and other AI frameworks
+- Respects rate limits and robots.txt for ethical scraping
+- Easily extensible to support new documentation sources
 
-Create local documentation caches for offline development
-Build custom knowledge bases for AI coding assistants
-Generate reference material for team onboarding
-Archive documentation versions for backwards compatibility
+## 🚀 Use cases
 
-🛠️ Built with
+- Create local documentation caches for offline development
+- Build custom knowledge bases for AI coding assistants
+- Generate reference material for team onboarding
+- Archive documentation versions for backwards compatibility
 
-Python 3.9+
-UV package manager
-BeautifulSoup4
-Rich for beautiful CLI output
-Configurable architecture using YAML
+## 🛠️ Built with
+
+- Python 3.9+
+- UV package manager
+- BeautifulSoup4
+- Rich for beautiful CLI output
+- Configurable architecture using YAML
 
 ## Features
 
-- Downloads complete ModelContextProtocol.io documentation
+- Downloads complete documentation from various technical websites
 - Converts HTML content to well-formatted Markdown
 - Maintains link integrity within saved documents
 - Organizes content in a structured file hierarchy
@@ -47,8 +48,8 @@ Configurable architecture using YAML
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mcp_doc_getter.git
-   cd mcp_doc_getter
+   git clone https://github.com/yourusername/DocHarvester.git
+   cd DocHarvester
    ```
 
 2. Set up the environment:
@@ -69,7 +70,7 @@ Configurable architecture using YAML
 Run the scraper with default settings:
 
 ```bash
-mcp-scraper
+docharvester
 ```
 
 ### Custom Configuration
@@ -77,7 +78,7 @@ mcp-scraper
 Specify a custom configuration file:
 
 ```bash
-mcp-scraper --config path/to/config.yaml
+docharvester --config path/to/config.yaml
 ```
 
 ### Configuration Options
