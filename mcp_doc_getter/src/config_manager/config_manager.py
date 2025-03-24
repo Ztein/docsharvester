@@ -109,4 +109,39 @@ class ConfigManager:
         Returns:
             The configuration section as a dictionary, or empty dict if not found
         """
-        return self.config.get(section, {}) 
+        return self.config.get(section, {})
+    
+    def get_extraction_config(self) -> Dict[str, Any]:
+        """
+        Get the extraction configuration.
+        
+        Returns:
+            A dictionary containing the extraction configuration
+        """
+        return self.get_section("extraction")
+    
+    def get_conversion_config(self) -> Dict[str, Any]:
+        """
+        Get the conversion configuration.
+        
+        Returns:
+            A dictionary containing the conversion configuration
+        """
+        conversion_config = self.get_section("conversion")
+        
+        # Set defaults if the conversion section is missing
+        if not conversion_config:
+            logging.warning("Conversion section missing from config, using defaults")
+            conversion_config = {
+                "include_metadata": True,
+                "html2text_options": {
+                    "body_width": 0,
+                    "unicode_snob": True,
+                    "tables": True,
+                    "single_line_break": True
+                },
+                "code_block_style": "fenced",
+                "table_style": "pipe"
+            }
+        
+        return conversion_config 

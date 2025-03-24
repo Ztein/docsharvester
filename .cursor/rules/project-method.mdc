@@ -1,0 +1,266 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Cursor AI Project Development Workflow
+
+## Available Commands for Product Owner
+- "start the project"
+- "Continue developing the project"
+- "Refactor the project [optional: specific feature]"
+
+## Main Decision Flow
+
+```
+IF command is "start the project"
+    IF "Project docs" folder exists
+        IF documents in folder indicate project has started
+            THEN inform Product Owner project is already initialized
+        ELSE
+            THEN execute SET_UP_PROJECT
+    ELSE
+        THEN execute SET_UP_PROJECT
+
+ELSE IF command is "Continue developing the project"
+    THEN execute CONTINUE_DEVELOP_PRODUCT
+
+ELSE IF command is "Refactor the project"
+    THEN execute REFACTOR_PROJECT
+```
+
+## SET_UP_PROJECT
+
+```
+IF git repository NOT connected
+    THEN suggest repository name based on project
+    AND initialize git repository
+    AND create appropriate .gitignore
+    AND make initial commit "Project initialization"
+    AND setup development and main branches
+
+THEN analyze PRD document in detail
+
+THEN create architecture document containing:
+    - System components
+    - Data models
+    - API endpoints (if applicable)
+    - Technology stack
+    - Security considerations
+    - Scalability approach
+
+THEN present architecture to Product Owner
+IF Product Owner approves
+    THEN store plan as "Project docs/Architecture.md"
+ELSE
+    THEN revise plan based on feedback
+    AND present again until approved
+
+THEN create environment setup:
+    - Environment files (.env.example, etc.)
+    - Virtual environment if Python
+    - README.md with setup instructions
+    - Linting configuration
+
+THEN create backlog:
+    - Create "Project docs/Backlog.md"
+    - Identify all features from PRD
+    - Break features into agile stories
+    
+FOR EACH feature in PRD
+    THEN create story using template
+    AND save to "Project docs/Stories TODO"
+    AND add story header to backlog
+
+THEN sort stories by:
+    - Business value
+    - Technical risk
+    - Dependencies
+    - Complexity
+
+THEN create skeleton MVP:
+    IF project has APIs/endpoints
+        THEN create API interfaces first
+    ELSE
+        THEN create component interfaces
+    AND document MVP in "Project docs/MVP.md"
+
+THEN create "Project docs/Definition of Done.md"
+```
+
+## CONTINUE_DEVELOP_PRODUCT
+
+```
+IF story exists in "Stories DOING" folder
+    THEN continue with that story
+ELSE
+    THEN select highest priority story from "Stories TODO"
+    AND move to "Stories DOING"
+
+THEN read project plan document
+AND read PRD
+
+IF any requirements are unclear
+    THEN ask Product Owner for clarification
+    AND document answers in story
+
+THEN create detailed plan for implementing story
+AND document in story under "Implementation Approach"
+
+THEN write tests for story requirements:
+    - Unit tests
+    - Integration tests
+    - Edge case tests
+
+THEN implement functionality following tests
+AND follow code style guidelines
+AND add documentation
+AND add error handling
+AND add logging
+
+THEN run linting and style checks
+IF issues found
+    THEN fix issues
+
+THEN run all tests
+IF tests fail
+    THEN fix code
+    AND run tests again until passing
+
+THEN self-review using checklist:
+    - All tests passing
+    - Code follows style guidelines
+    - Documentation complete
+    - Acceptance criteria met
+    - Error handling appropriate
+    - Performance considerations addressed
+
+THEN request review from Product Owner
+IF Product Owner provides feedback
+    THEN address feedback
+    AND request review again
+
+WHEN Product Owner approves
+    THEN move story to "Stories DONE"
+    AND update backlog
+    AND commit changes with descriptive message
+    AND create pull request if using branch workflow
+```
+
+## REFACTOR_PROJECT
+
+```
+IF Product Owner specified feature to refactor
+    THEN focus refactoring scope on that feature
+ELSE
+    THEN plan general project refactoring
+
+THEN read PRD and project docs
+
+THEN review architecture plan
+IF architecture plan doesn't match PRD needs
+    THEN propose updates to Product Owner
+
+THEN check test coverage
+IF tests don't cover functionality in DOING and DONE stories
+    THEN improve tests
+
+THEN run tests
+IF tests don't pass
+    THEN discuss with Product Owner
+    AND fix failing tests
+
+THEN review code structure
+IF code doesn't match project docs
+    THEN update docs to match reality
+    OR update code to match docs (ask Product Owner)
+
+IF code is poorly documented
+    THEN improve documentation
+    AND add references to PRD and project docs
+
+IF better code structure alternatives exist
+    THEN propose to Product Owner
+    IF Product Owner agrees
+        THEN refactor code accordingly
+```
+
+## Special Situations
+
+```
+IF story is blocked
+    THEN document blocking reason
+    AND move to "Stories BLOCKED" folder
+    AND create subtask to resolve blocker
+
+IF emergency hotfix needed
+    THEN create hotfix branch from production
+    AND implement minimal changes
+    AND test thoroughly
+    AND merge to both production and development
+
+IF technical debt item identified
+    THEN document in "Tech Debt" document
+    AND prioritize based on impact and risk
+```
+
+## Version Control Practices
+
+```
+WHEN committing changes
+    THEN use conventional format:
+    "<type>(<scope>): <description>"
+    
+    WHERE type is one of:
+    - feat
+    - fix
+    - docs
+    - style
+    - refactor
+    - test
+    - chore
+    
+ALWAYS commit after each logical change
+ALWAYS use feature branches
+NEVER commit directly to main/master
+KEEP pull requests focused on single concerns
+```
+
+## Testing Practices
+
+```
+AIM for at least 80% code coverage
+INCLUDE different test types:
+    - Unit tests
+    - Integration tests
+    - End-to-end tests
+    
+TEST both:
+    - Happy paths
+    - Error conditions
+    
+MOCK external dependencies
+KEEP tests independent
+USE descriptive test names
+```
+
+## Documentation Practices
+
+```
+KEEP documentation close to code when possible
+UPDATE documentation when code changes
+DOCUMENT "why" not just "what"
+INCLUDE examples
+DOCUMENT APIs with OpenAPI/Swagger
+MAINTAIN changelog
+```
+
+## Continuous Improvement
+
+```
+REGULARLY conduct retrospectives
+UPDATE workflow based on learnings
+SHARE best practices
+SCHEDULE architecture reviews
+IMPLEMENT feedback loops
+```

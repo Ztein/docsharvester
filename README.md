@@ -127,6 +127,30 @@ pip install -e ".[dev]"
 pytest
 ```
 
+## Testing
+
+The project uses pytest for testing. To run the tests:
+
+```bash
+python -m pytest
+```
+
+For verbose output:
+
+```bash
+python -m pytest -v
+```
+
+To run tests for a specific component:
+
+```bash
+python -m pytest tests/component_name/
+```
+
+The test infrastructure is set up for test-driven development. Many tests are skipped because their components are not yet implemented. As you implement each component, update the tests to remove the `@unittest.skip` decorators and verify that the functionality works as expected.
+
+Refer to the `tests/README.md` file for more information about the test structure and available fixtures.
+
 ## License
 
 MIT License 

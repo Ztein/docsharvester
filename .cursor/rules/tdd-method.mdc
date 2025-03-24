@@ -1,7 +1,7 @@
 ---
 description: 
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
 Start by looking in the folder "Project docs". Does it seem we have started the project?
 
