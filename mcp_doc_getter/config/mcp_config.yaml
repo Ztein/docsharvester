@@ -7,16 +7,39 @@ crawling:
     - "/docs/*"
   exclude_patterns:
     - "/blog/*"
+    - "/docs/search*"
+    - "/docs/api/changelog*"
   max_depth: 5
   rate_limit: 1  # requests per second
   
 extraction:
-  content_selector: "main.content"
-  title_selector: "h1.title"
+  # General selectors
+  content_selector: "main.content, article.content, .documentation-content"
+  title_selector: "h1.title, h1.doc-title, main h1"
+  
+  # MCP-specific selectors
+  mcp_content_selector: "main .documentation-content, .doc-content, #content-wrapper"
+  
   ignore_selectors:
     - "div.sidebar"
     - "footer"
     - "nav"
+    - "header"
+    - ".toc-sidebar"
+    - ".doc-search"
+    - ".theme-toggle"
+    - ".version-selector"
+    
+  # MCP-specific element handling
+  code_block_selectors: 
+    - "pre code"
+    - ".highlight pre"
+    - ".code-sample"
+  
+  table_selectors:
+    - "table.parameters"
+    - "table.api-table"
+    - ".table-responsive table"
     
 conversion:
   include_metadata: true
@@ -27,16 +50,29 @@ conversion:
     single_line_break: true
   code_block_style: "fenced"  # Options: fenced, indented
   table_style: "pipe"  # Options: pipe, grid
+  
+  # MCP-specific conversion options
+  default_code_language: "python"
+  handle_admonitions: true
+  preserve_code_tabs: true
     
 output:
   base_dir: "MCP_DOCS"
   file_prefix: "MCP_"
   naming_convention: "UPPERCASE_WITH_UNDERSCORES"
   
+  # MCP-specific output options
+  section_folders: true  # Organize by sections (e.g., /core/, /python/)
+  create_toc: true  # Create table of contents files
+  
 link_handling:
   internal_link_pattern: "^https?://modelcontextprotocol\\.io"
   preserve_anchor_links: true
   image_handling: "download"  # Options: download, reference
+  
+  # MCP-specific link handling
+  api_link_transform: "append_section"  # Transform API links by appending section
+  example_link_transform: "maintain_path"  # Maintain path structure for example links
 
 error_handling:
   log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR

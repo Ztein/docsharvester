@@ -18,9 +18,10 @@ from mcp_doc_getter.src.content_extractor import ContentExtractor
 from mcp_doc_getter.src.markdown_converter import MarkdownConverter
 from mcp_doc_getter.src.link_handler import LinkHandler
 from mcp_doc_getter.src.file_system_manager import FileSystemManager
+from mcp_doc_getter.src.error_handler import setup_error_handling, ErrorHandler, MCP_Exception
 
-# These imports will be implemented as the project progresses
-# from mcp_doc_getter.src.error_handler import setup_error_handling
+# Import MCP-specific components
+from mcp_doc_getter.src.mcp_specific.mcp_extractor import MCPContentExtractor
 
 
 def setup_logging(log_level: str = "INFO") -> None:
@@ -54,6 +55,11 @@ def parse_args() -> argparse.Namespace:
         default="INFO",
         help="Set the logging level",
     )
+    parser.add_argument(
+        "--use-generic",
+        action="store_true",
+        help="Use generic extractor instead of MCP-specific extractor",
+    )
     return parser.parse_args()
 
 
@@ -69,27 +75,98 @@ def main() -> None:
         config_manager = ConfigManager(args.config)
         logging.info(f"Configuration loaded and validated from {args.config}")
 
+        # Set up error handling
+        setup_error_handling(config_manager)
+        error_handler = ErrorHandler(config_manager)
+        
         # Initialize components
         web_crawler = WebCrawler(config_manager)
-        content_extractor = ContentExtractor(config_manager)
+        
+        # Use MCP-specific extractor unless --use-generic is specified
+        if args.use_generic:
+            content_extractor = ContentExtractor(config_manager)
+            logging.info("Using generic content extractor")
+        else:
+            content_extractor = MCPContentExtractor(config_manager)
+            logging.info("Using MCP-specific content extractor")
+            
         markdown_converter = MarkdownConverter(config_manager)
         link_handler = LinkHandler(config_manager)
         file_system_manager = FileSystemManager(config_manager)
 
+        # Get the base URL from the configuration and append /docs to target the documentation
+        base_url = config_manager.get('site', 'base_url')
+        docs_url = f"{base_url}/docs"
+        
+        # Add '/docs' to the WebCrawler's include patterns to ensure it's crawled
+        if '/docs' not in web_crawler.include_patterns:
+            web_crawler.include_patterns.append('/docs')
+        
         # Crawl the website and get URLs
-        urls = web_crawler.crawl()
+        error_handler.log_info("main", f"Starting to crawl from {docs_url}")
+        urls = web_crawler.crawl(start_url=docs_url)
+        error_handler.log_info("main", f"Found {len(urls)} pages to process")
 
         # Process each URL
+        processed_count = 0
+        failed_count = 0
+        
         for url in urls:
-            html_content = web_crawler.get_content(url)
-            extracted_content = content_extractor.extract(html_content, url)
-            markdown_content = markdown_converter.convert(extracted_content)
-            processed_content = link_handler.process_links(markdown_content, url)
-            file_system_manager.save_content(processed_content, url)
+            try:
+                error_handler.log_info("main", f"Processing {url}")
+                
+                # Fetch the page
+                response = web_crawler.fetch_url(url)
+                html_content = response.text
+                
+                # Extract content
+                extracted_content = content_extractor.extract(html_content, url)
+                
+                # Convert to markdown
+                markdown_content = markdown_converter.convert(extracted_content)
+                
+                # If using MCP-specific extractor, apply its postprocessing to the markdown
+                if not args.use_generic and hasattr(content_extractor, 'mcp_handler'):
+                    markdown_content = content_extractor.mcp_handler.postprocess_markdown(markdown_content)
+                
+                # Process links
+                processed_content = link_handler.process_links(markdown_content, url)
+                
+                # Save to file system
+                file_path = file_system_manager.save_content(processed_content, url)
+                
+                processed_count += 1
+                error_handler.log_info("main", f"Successfully processed {url} -> {file_path}")
+                
+            except Exception as e:
+                failed_count += 1
+                error_handler.log_error("main", f"Failed to process {url}", e)
+                error_handler.track_failure("processing", url, str(e))
 
-            logging.info(f"Processed {url}")
+        # Summary
+        error_handler.log_info(
+            "main", 
+            f"Scraping completed: {processed_count} pages successful, {failed_count} pages failed"
+        )
+        
+        # Report any failures
+        failures = error_handler.get_failures()
+        if any(failures.values()):
+            error_handler.log_warning(
+                "main", 
+                f"Encountered failures during processing. See log for details."
+            )
+            for failure_type, type_failures in failures.items():
+                if type_failures:
+                    error_handler.log_warning(
+                        "main", 
+                        f"{failure_type}: {len(type_failures)} failures"
+                    )
 
-        logging.info("Scraping completed successfully")
+        if failed_count == 0:
+            logging.info("Scraping completed successfully")
+        else:
+            logging.warning(f"Scraping completed with {failed_count} failures")
 
     except Exception as e:
         logging.error(f"An error occurred: {e}")
