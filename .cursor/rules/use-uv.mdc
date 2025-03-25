@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+when installing a python package, add to relevant file (pyproject.toml or requirements.txt or both), and then run uv.
+If we need to use pip, do not install it. it is installed, but might be called pip3.

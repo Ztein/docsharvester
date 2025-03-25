@@ -91,9 +91,17 @@ THEN create "Project docs/Definition of Done.md"
 ## CONTINUE_DEVELOP_PRODUCT
 
 ```
+IF bug exists in "Stories TODO"
+    THEN select one bug
+    AND run tests to verify that the error is still occuring 
+    IF bug is still occuring
+        THEN move to "Stories DOING"
+        AND fix the bug
+
 IF story exists in "Stories DOING" folder
     THEN continue with that story
 ELSE
+    
     THEN select highest priority story from "Stories TODO"
     AND move to "Stories DOING"
 
@@ -242,6 +250,8 @@ TEST both:
 MOCK external dependencies
 KEEP tests independent
 USE descriptive test names
+
+When we get multiple errors when testing ask the Product owner whether to create bug reports in Stories TODO or just fix the errors.
 ```
 
 ## Documentation Practices
