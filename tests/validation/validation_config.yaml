@@ -1,0 +1,43 @@
+# Validation Configuration for MCP Documentation Scraper
+
+# General settings
+enabled: true
+log_level: INFO
+
+# Directory settings
+data_dir: validation/data
+results_dir: validation/results
+
+# Test data settings
+test_data:
+  - name: "basic_html"
+    description: "Basic HTML document for testing"
+    file: "basic.html"
+  - name: "complex_html"
+    description: "Complex HTML document with various elements"
+    file: "complex.html"
+  - name: "invalid_html"
+    description: "Invalid HTML document for error testing"
+    file: "invalid.html"
+
+# Validation rules
+rules:
+  - name: "html_structure"
+    description: "Validate basic HTML structure"
+    enabled: true
+  - name: "content_extraction"
+    description: "Validate content extraction"
+    enabled: true
+  - name: "markdown_conversion"
+    description: "Validate HTML to Markdown conversion"
+    enabled: true
+  - name: "link_handling"
+    description: "Validate link processing"
+    enabled: true
+
+# Reporting settings
+reporting:
+  format: "json"
+  include_timestamps: true
+  include_errors: true
+  include_warnings: true 

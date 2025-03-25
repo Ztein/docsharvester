@@ -143,7 +143,13 @@ class TestFileManager:
 DEFAULT_CONFIG = {
     "site": {
         "name": "ModelContextProtocol",
-        "base_url": "https://example.com"
+        "base_url": "https://example.com",
+        "validation": {
+            "enabled": True,
+            "data_dir": "validation/data",
+            "results_dir": "validation/results",
+            "log_level": "INFO"
+        }
     },
     "crawling": {
         "include_patterns": ["/docs/*"],
