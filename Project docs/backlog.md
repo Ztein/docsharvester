@@ -14,7 +14,12 @@ Sorted by priority (highest to lowest):
 6. ~~**STORY-006**: Link Handler Implementation~~ (COMPLETED)
 7. ~~**STORY-007**: Error Handling and Logging~~ (COMPLETED)
 8. ~~**STORY-008**: MCP Documentation Specific Implementation~~ (COMPLETED)
-9. **STORY-009**: Testing and Validation for MCP (NEXT)
+9. **STORY-009**: Testing and Validation for MCP
+   - ~~**STORY-009-1**: Basic Testing Infrastructure Setup~~ (COMPLETED)
+   - ~~**STORY-009-2**: HTML Structure Validation~~ (COMPLETED)
+   - **STORY-009-3**: Content Extraction Validation
+   - **STORY-009-4**: Markdown Conversion Validation
+   - **STORY-009-5**: Link Handling Validation
 10. **STORY-010**: Universal Scraper Implementation
 11. **STORY-011**: Additional Site Configuration (Pydantic AI)
 12. **STORY-012**: Performance Optimization
@@ -31,9 +36,9 @@ Sorted by priority (highest to lowest):
 - **STORY-013** should be completed last
 
 ## Progress Tracking
-- **Completed**: STORY-001, STORY-002, STORY-003, STORY-004, STORY-005, STORY-006, STORY-007, STORY-008
+- **Completed**: STORY-001, STORY-002, STORY-003, STORY-004, STORY-005, STORY-006, STORY-007, STORY-008, STORY-009-1, STORY-009-2
 - **In Progress**: None
-- **Pending**: STORY-009, STORY-010, STORY-011, STORY-012, STORY-013
+- **Pending**: STORY-009-3, STORY-009-4, STORY-009-5, STORY-010, STORY-011, STORY-012, STORY-013
 
 ## Risks and Mitigations
 - **Rate limiting and site policies**: Implement respectful crawling to avoid IP bans
