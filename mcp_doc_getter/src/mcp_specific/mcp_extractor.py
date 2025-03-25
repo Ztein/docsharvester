@@ -157,7 +157,7 @@ class MCPContentExtractor(ContentExtractor):
             The MCP version or None if not found
         """
         # Try to find version information in various locations
-        version_element = soup.select_one('.version-info, .doc-version, footer .version')
+        version_element = soup.select_one('.version-info, .doc-version, .version')
         if version_element:
             return version_element.get_text(strip=True)
         
