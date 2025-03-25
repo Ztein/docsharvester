@@ -103,7 +103,8 @@ IF story exists in "Stories DOING" folder
 ELSE
     
     THEN select highest priority story from "Stories TODO"
-    AND move to "Stories DOING"
+    AND move to "Stories DOING", note that it is very important to do this. Do not forget to move the story.
+    AND create feature branch named "feature/STORY-XXX-description"
 
 THEN read project plan document
 AND read PRD
@@ -274,3 +275,13 @@ SHARE best practices
 SCHEDULE architecture reviews
 IMPLEMENT feedback loops
 ```
+
+## Story Movement Process
+WHEN starting work on a story
+THEN move story from "Stories TODO" to "Stories DOING"
+AND create feature branch
+AND document start date in story
+WHEN completing a story
+THEN move story from "Stories DOING" to "Stories DONE"
+AND update backlog
+AND create pull request

@@ -1,0 +1,25 @@
+---
+description: Use this when creating or updating a story.
+globs: 
+alwaysApply: false
+---
+## Story Structure
+Each story should follow this template:
+
+STORY-XXX: Title
+Description
+As a [role], I need to [action] to [benefit].
+Acceptance Criteria
+[Measurable criteria]
+Technical Notes
+[Technical implementation details]
+Tasks
+[Ordered list of implementation steps]
+Definition of Done
+[Measurable completion criteria]
+Story Status
+[ ] Moved to DOING
+[ ] Feature branch created
+[ ] Implementation complete
+[ ] Tests passing
+[ ] Code review completed
