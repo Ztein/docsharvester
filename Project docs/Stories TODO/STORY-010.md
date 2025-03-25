@@ -1,7 +1,7 @@
 # STORY-010: Universal Scraper Implementation
 
 ## Description
-As a developer, I need to transform the current MCP-specific implementation into a truly universal documentation scraper that can work with different documentation sites through configuration, aligning with the DocHarvester name and project goals.
+As a developer, I need to transform the current MCP-specific implementation into a truly universal documentation scraper that can work with different documentation sites through configuration so that we can support a wider range of documentation sites and make the tool more valuable to the community.
 
 ## Acceptance Criteria
 - Rename all MCP-specific classes, files, and references to generic/universal equivalents
@@ -71,3 +71,10 @@ As a developer, I need to transform the current MCP-specific implementation into
 - All components of the simplified architecture are properly integrated
 - Configuration system supports multiple site types
 - Error handling is consistent across all components 
+
+## Story Status
+[ ] Moved to DOING
+[ ] Feature branch created
+[ ] Implementation complete
+[ ] Tests passing
+[ ] Code review completed 

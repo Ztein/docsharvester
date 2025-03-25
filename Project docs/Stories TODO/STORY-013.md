@@ -1,7 +1,7 @@
 # STORY-013: Documentation and Usage Guide
 
 ## Description
-As a user, I need comprehensive documentation and a detailed usage guide to effectively use, configure, and extend the scraper.
+As a user, I need to have comprehensive documentation and a detailed usage guide to effectively use, configure, and extend the scraper so that I can maximize the tool's capabilities without requiring external support.
 
 ## Acceptance Criteria
 - Creates clear README with installation and basic usage instructions
@@ -72,3 +72,10 @@ As a user, I need comprehensive documentation and a detailed usage guide to effe
 - Search functionality works effectively
 - Version compatibility is clearly stated
 - Architecture diagrams are clear and accurate
+
+## Story Status
+[ ] Moved to DOING
+[ ] Feature branch created
+[ ] Implementation complete
+[ ] Tests passing
+[ ] Code review completed

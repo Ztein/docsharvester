@@ -1,7 +1,7 @@
 # STORY-011: Additional Site Configuration (Pydantic AI)
 
 ## Description
-As a user, I need the scraper to be configured and tested for an additional documentation site (Pydantic AI) to demonstrate its adaptability.
+As a user, I need the scraper to be configured and tested for an additional documentation site (Pydantic AI) so that we can validate the framework's adaptability and provide a real-world example for future site integrations.
 
 ## Acceptance Criteria
 - Creates specific configuration for Pydantic AI documentation
@@ -92,4 +92,11 @@ As a user, I need the scraper to be configured and tested for an additional docu
 - Minimal core code changes were needed (demonstrating reusability)
 - All components of the simplified architecture work with Pydantic plugin
 - Error handling is consistent with MCP implementation
-- Performance metrics are comparable to MCP implementation 
+- Performance metrics are comparable to MCP implementation
+
+## Story Status
+[ ] Moved to DOING
+[ ] Feature branch created
+[ ] Implementation complete
+[ ] Tests passing
+[ ] Code review completed 
