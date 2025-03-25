@@ -10,6 +10,7 @@ import argparse
 import logging
 import sys
 from pathlib import Path
+from typing import List
 
 # Import the ConfigManager from its package
 from mcp_doc_getter.src.config_manager import ConfigManager
@@ -19,6 +20,7 @@ from mcp_doc_getter.src.markdown_converter import MarkdownConverter
 from mcp_doc_getter.src.link_handler import LinkHandler
 from mcp_doc_getter.src.file_system_manager import FileSystemManager
 from mcp_doc_getter.src.error_handler import setup_error_handling, ErrorHandler, MCP_Exception
+from mcp_doc_getter.src.validation import ExternalLinkValidator
 
 # Import MCP-specific components
 from mcp_doc_getter.src.mcp_specific.mcp_extractor import MCPContentExtractor
@@ -93,6 +95,7 @@ def main() -> None:
         markdown_converter = MarkdownConverter(config_manager)
         link_handler = LinkHandler(config_manager)
         file_system_manager = FileSystemManager(config_manager)
+        external_link_validator = ExternalLinkValidator(config_manager)
 
         # Get the base URL from the configuration and append /docs to target the documentation
         base_url = config_manager.get('site', 'base_url')
@@ -132,6 +135,12 @@ def main() -> None:
                 # Process links
                 processed_content = link_handler.process_links(markdown_content, url)
                 
+                # Validate external links
+                validation_results = external_link_validator.validate_links(processed_content)
+                
+                # Add validation results to content metadata
+                processed_content["validation"] = validation_results
+                
                 # Save to file system
                 file_path = file_system_manager.save_content(processed_content, url)
                 
@@ -143,34 +152,41 @@ def main() -> None:
                 error_handler.log_error("main", f"Failed to process {url}", e)
                 error_handler.track_failure("processing", url, str(e))
 
+        # Generate validation report
+        validation_report = external_link_validator.generate_report()
+        
+        # Save validation report
+        report_path = file_system_manager.save_validation_report(validation_report)
+        error_handler.log_info("main", f"Validation report saved to {report_path}")
+
         # Summary
         error_handler.log_info(
             "main", 
             f"Scraping completed: {processed_count} pages successful, {failed_count} pages failed"
         )
         
+        # Report validation metrics
+        metrics = validation_report["metrics"]
+        error_handler.log_info(
+            "main",
+            f"Link validation: {metrics['valid_links']}/{metrics['total_external_links']} valid, "
+            f"{metrics['invalid_links']} invalid, {metrics['api_links']} API links"
+        )
+        
         # Report any failures
         failures = error_handler.get_failures()
-        if any(failures.values()):
+        if failures:
             error_handler.log_warning(
-                "main", 
-                f"Encountered failures during processing. See log for details."
+                "main",
+                f"There were {len(failures)} failures during processing. "
+                "Check the error log for details."
             )
-            for failure_type, type_failures in failures.items():
-                if type_failures:
-                    error_handler.log_warning(
-                        "main", 
-                        f"{failure_type}: {len(type_failures)} failures"
-                    )
-
-        if failed_count == 0:
-            logging.info("Scraping completed successfully")
-        else:
-            logging.warning(f"Scraping completed with {failed_count} failures")
 
     except Exception as e:
-        logging.error(f"An error occurred: {e}")
+        error_handler.log_error("main", "Fatal error", e)
         sys.exit(1)
+
+    logging.info("DocHarvester completed successfully")
 
 
 if __name__ == "__main__":

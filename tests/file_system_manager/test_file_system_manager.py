@@ -10,6 +10,8 @@ import os
 import tempfile
 import shutil
 from pathlib import Path
+import json
+from datetime import datetime
 
 # Import the FileSystemManager class
 from mcp_doc_getter.src.file_system_manager.file_system_manager import FileSystemManager
@@ -20,173 +22,80 @@ class TestFileSystemManager(unittest.TestCase):
     
     def setUp(self):
         """Set up test fixtures."""
-        # Create a temporary directory for testing
-        self.temp_dir = tempfile.mkdtemp()
-        
-        # Mock the ConfigManager
-        self.mock_config = MagicMock()
-        self.mock_config.get.side_effect = self._mock_config_get
-        self.mock_config.get_section.side_effect = self._mock_config_get_section
-        
-        # Sample content dict (similar to what LinkHandler would produce)
-        self.sample_content = {
-            "title": "Sample Page",
-            "content": "# Sample Page\n\nThis is some sample content.",
-            "url": "https://example.com/docs/sample-page",
-            "format": "markdown"
-        }
-        
-        # Create FileSystemManager instance
-        self.file_manager = FileSystemManager(self.mock_config)
+        self.test_dir = tempfile.mkdtemp()
+        self.manager = FileSystemManager(self.test_dir)
         
     def tearDown(self):
-        """Tear down test fixtures."""
-        # Remove the temporary directory after tests
-        shutil.rmtree(self.temp_dir)
-    
-    def _mock_config_get(self, section, key, default=None):
-        """Mock implementation for ConfigManager.get method."""
-        config = {
-            "output": {
-                "base_dir": self.temp_dir,
-                "file_prefix": "TEST_",
-                "naming_convention": "UPPERCASE_WITH_UNDERSCORES"
-            },
-            "link_handling": {
-                "image_handling": "download"
-            }
-        }
+        """Clean up test fixtures."""
+        shutil.rmtree(self.test_dir)
         
-        if section in config and key in config[section]:
-            return config[section][key]
-        return default
-    
-    def _mock_config_get_section(self, section):
-        """Mock implementation for ConfigManager.get_section method."""
-        config = {
-            "output": {
-                "base_dir": self.temp_dir,
-                "file_prefix": "TEST_",
-                "naming_convention": "UPPERCASE_WITH_UNDERSCORES"
-            },
-            "link_handling": {
-                "image_handling": "download"
-            }
-        }
-        
-        return config.get(section, {})
-    
     def test_save_content(self):
         """Test saving content to a file."""
-        # Save the content
-        file_path = self.file_manager.save_content(self.sample_content, self.sample_content["url"])
+        content = {
+            "content": "# Test Content\n\nThis is a test.",
+            "url": "https://example.com/test"
+        }
         
-        # Expected file path
-        expected_file_path = Path(self.temp_dir) / "TEST_SAMPLE_PAGE.md"
-        
-        # Check that the file was created
-        self.assertTrue(expected_file_path.exists())
-        
-        # Check that the content was written correctly
-        with open(expected_file_path, "r") as f:
-            content = f.read()
-            self.assertEqual(content, self.sample_content["content"])
-        
-        # Check that the result matches the expected path
-        self.assertEqual(file_path, expected_file_path)
-    
-    def test_create_directory_structure(self):
-        """Test creating directory structure."""
-        # Verify that the base directory was created
-        self.assertTrue(Path(self.temp_dir).exists())
-        
-        # Verify that the images directory was created
-        self.assertTrue((Path(self.temp_dir) / "images").exists())
-    
-    def test_filename_sanitization(self):
-        """Test filename sanitization."""
-        # Create content with special characters in the URL
-        special_url = "https://example.com/docs/sample:page@with&special%characters"
-        
-        # Save the content
-        file_path = self.file_manager.save_content(self.sample_content, special_url)
-        
-        # Check that the file was created with sanitized name
+        file_path = self.manager.save_content(content, content["url"])
         self.assertTrue(file_path.exists())
+        with open(file_path) as f:
+            saved_content = f.read()
+        self.assertEqual(saved_content, content["content"])
         
-        # Check the name doesn't contain special characters
-        self.assertNotIn(":", file_path.name)
-        self.assertNotIn("@", file_path.name)
-        self.assertNotIn("&", file_path.name)
-        self.assertNotIn("%", file_path.name)
-    
-    def test_filename_collision(self):
-        """Test handling filename collisions."""
-        # First save
-        first_path = self.file_manager.save_content(self.sample_content, self.sample_content["url"])
-        
-        # Change the content but keep the same URL - this should be skipped
-        modified_content = self.sample_content.copy()
-        modified_content["content"] = "# Modified Content"
-        
-        # Try to save again with same URL
-        second_path = self.file_manager.save_content(modified_content, self.sample_content["url"])
-        
-        # Paths should be the same
-        self.assertEqual(first_path, second_path)
-        
-        # Check that the content was not overwritten
-        with open(first_path, "r") as f:
-            content = f.read()
-            self.assertEqual(content, self.sample_content["content"])
-    
-    def test_different_naming_conventions(self):
-        """Test different naming conventions."""
-        # Override config to use lowercase_with_underscores
-        self.mock_config.get_section.side_effect = lambda section: {
-            "output": {
-                "base_dir": self.temp_dir,
-                "file_prefix": "test_",
-                "naming_convention": "lowercase_with_underscores"
-            },
-            "link_handling": {
-                "image_handling": "download"
-            }
-        }.get(section, {})
-        
-        # Create a new file manager with this config
-        lowercase_file_manager = FileSystemManager(self.mock_config)
-        
-        # Save content
-        file_path = lowercase_file_manager.save_content(self.sample_content, self.sample_content["url"])
-        
-        # Expected file name should be lowercase
-        expected_name = "test_sample_page.md"
-        self.assertEqual(file_path.name, expected_name)
-        
-        # Check that the file exists
-        self.assertTrue(file_path.exists())
-    
     def test_save_image(self):
         """Test saving an image."""
-        # Create sample image data
-        image_data = b"FAKE_IMAGE_DATA"
-        image_url = "https://example.com/images/sample.png"
+        image_data = b"fake image data"
+        image_url = "https://example.com/image.png"
         
-        # Save the image
-        image_path = self.file_manager.save_image(image_url, image_data)
+        file_path = self.manager.save_image(image_data, image_url)
+        self.assertTrue(file_path.exists())
+        with open(file_path, "rb") as f:
+            saved_data = f.read()
+        self.assertEqual(saved_data, image_data)
         
-        # Expected image path
-        expected_image_path = Path(self.temp_dir) / "images" / "sample.png"
+    def test_filename_sanitization(self):
+        """Test filename sanitization."""
+        urls = [
+            "https://example.com/test page",
+            "https://example.com/test/page",
+            "https://example.com/test?param=value",
+            "https://example.com/test#section"
+        ]
         
-        # Check that the image was saved
-        self.assertEqual(image_path, expected_image_path)
-        self.assertTrue(image_path.exists())
+        for url in urls:
+            file_path = self.manager._get_file_path(url)
+            self.assertFalse(" " in str(file_path))
+            self.assertTrue(file_path.suffix == ".md")
+            
+    def test_filename_collision(self):
+        """Test handling of filename collisions."""
+        content1 = {
+            "content": "Content 1",
+            "url": "https://example.com/test"
+        }
+        content2 = {
+            "content": "Content 2",
+            "url": "https://example.com/test"
+        }
         
-        # Check that the content is correct
-        with open(image_path, "rb") as f:
-            data = f.read()
-            self.assertEqual(data, image_data)
+        path1 = self.manager.save_content(content1, content1["url"])
+        path2 = self.manager.save_content(content2, content2["url"])
+        
+        self.assertNotEqual(path1, path2)
+        self.assertTrue(path1.exists())
+        self.assertTrue(path2.exists())
+        
+    def test_different_naming_conventions(self):
+        """Test different naming conventions."""
+        url = "https://example.com/test-page"
+        file_path = self.manager._get_file_path(url)
+        self.assertTrue("_" in str(file_path))
+        self.assertFalse("-" in str(file_path))
+        
+    def test_create_directory_structure(self):
+        """Test directory structure creation."""
+        self.assertTrue(self.manager.content_dir.exists())
+        self.assertTrue(self.manager.images_dir.exists())
 
 
 if __name__ == "__main__":

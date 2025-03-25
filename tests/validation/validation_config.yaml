@@ -40,4 +40,46 @@ reporting:
   format: "json"
   include_timestamps: true
   include_errors: true
-  include_warnings: true 
+  include_warnings: true
+
+# Site configuration
+site:
+  base_url: https://modelcontextprotocol.io
+  name: Model Context Protocol
+
+# Link handling configuration
+link_handling:
+  internal_link_pattern: ^https?://modelcontextprotocol\.io
+  preserve_anchor_links: true
+  image_handling: download
+
+# Validation configuration
+validation:
+  # Request timeout in seconds
+  request_timeout: 5
+  
+  # Maximum number of retries for failed requests
+  max_retries: 3
+  
+  # Delay between retries in seconds
+  retry_delay: 1
+  
+  # Whether to validate API links
+  validate_api_links: true
+  
+  # Whether to follow redirects
+  follow_redirects: true
+  
+  # Maximum redirect depth
+  max_redirect_depth: 5
+  
+  # User agent for requests
+  user_agent: MCP-DocHarvester/1.0
+  
+  # Whether to verify SSL certificates
+  verify_ssl: true
+  
+  # Custom headers for requests
+  headers:
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    Accept-Language: en-US,en;q=0.5 
