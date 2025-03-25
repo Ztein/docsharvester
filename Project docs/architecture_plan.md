@@ -1,7 +1,14 @@
 # DocHarvester - Universal Documentation Scraper Architecture Plan
 
 ## Overview
-This project aims to develop a Python-based web scraper that downloads and stores documentation from various websites (including ModelContextProtocol.io and Pydantic AI) into Markdown files for offline reference. The scraper is designed to be adaptable for different documentation sites through configuration.
+This project aims to develop a Python-based web scraper that downloads and stores documentation from various websites into Markdown files for offline reference. The scraper is designed to be adaptable for different documentation sites through configuration.
+
+## Core Principles
+1. **Simplicity**: Each component has a single, clear responsibility
+2. **Flexibility**: Easy to adapt to different documentation sites
+3. **Reliability**: Robust error handling and recovery
+4. **Performance**: Efficient processing and caching
+5. **Maintainability**: Clear interfaces and documentation
 
 ## System Architecture
 
@@ -11,46 +18,68 @@ This project aims to develop a Python-based web scraper that downloads and store
    - Handles YAML-based configuration
    - Provides settings for crawling, parsing, and output
    - Enables easy adaptation to different documentation sites
+   - Supports environment-specific configurations
 
-2. **Web Crawler**
+2. **Plugin System**
+   - Simple plugin interface for site-specific implementations
+   - Site-specific configuration and rules
+   - Content extraction and processing
+   - Link handling and transformation
+   - Rate limiting and authentication
+
+3. **Web Crawler**
    - Traverses documentation site systematically
    - Respects robots.txt and implements rate limiting
    - Identifies all documentation pages for processing
    - Handles session management and retries
+   - Supports authentication when required
 
-3. **Content Extractor**
+4. **Content Processor**
    - Parses HTML content using site-specific selectors
    - Extracts meaningful documentation text
-   - Handles various content structures (headers, code blocks, tables, etc.)
-
-4. **Markdown Converter**
    - Converts HTML to well-formatted Markdown
-   - Preserves formatting elements (headers, code blocks, tables, lists, etc.)
-   - Processes images with appropriate references
+   - Handles various content structures
+   - Processes images and links
 
-5. **Link Handler**
-   - Preserves external links
-   - Converts internal links to relative paths for local access
-   - Handles anchor links appropriately
+5. **Storage Manager**
+   - Manages file system operations
+   - Implements caching for efficiency
+   - Organizes files in structured hierarchy
+   - Handles file operations with error handling
+   - Supports different output formats
 
-6. **File System Manager**
-   - Saves content following the specified naming convention
-   - Organizes files in a structured hierarchy
-   - Handles file operations with appropriate error handling
-
-7. **Error Handler**
-   - Implements robust error handling for network and parsing issues
+6. **Monitoring Handler**
+   - Tracks performance metrics
    - Logs errors and warnings
-   - Provides mechanisms to skip problematic pages and resume operations
+   - Provides recovery mechanisms
+   - Generates performance reports
+   - Handles retry logic
 
 ### Data Flow
 
-1. Configuration is loaded from YAML file
-2. Crawler traverses the documentation site
-3. Content extractor parses each page
-4. Markdown converter transforms content
-5. Link handler processes all links
-6. File system manager saves the content to disk
+1. **Load Configuration**
+   - Load and validate configuration
+   - Initialize plugin system
+
+2. **Initialize Plugin**
+   - Load site-specific plugin
+   - Configure site-specific rules
+
+3. **Crawl Site**
+   - Traverse documentation pages
+   - Respect rate limits and robots.txt
+   - Handle authentication if needed
+
+4. **Process Content**
+   - Extract and parse content
+   - Convert to Markdown
+   - Process links and images
+   - Handle errors and retries
+
+5. **Save Results**
+   - Cache processed content
+   - Save to file system
+   - Generate reports
 
 ## Technology Stack
 
@@ -58,9 +87,10 @@ This project aims to develop a Python-based web scraper that downloads and store
 - **UV package manager** for dependency management
 - **Key Libraries**:
   - BeautifulSoup4 for HTML parsing
-  - Requests or httpx for HTTP requests
-  - Markdown or html2text for HTML to Markdown conversion
+  - httpx for HTTP requests
+  - Markdown for HTML to Markdown conversion
   - PyYAML for configuration
+  - structlog for logging
 
 ## Project Structure
 
@@ -72,22 +102,27 @@ docharvester/
 ├── src/
 │   ├── __init__.py
 │   ├── config_manager.py
+│   ├── plugin_system.py
 │   ├── web_crawler.py
-│   ├── content_extractor.py
-│   ├── markdown_converter.py
-│   ├── link_handler.py
-│   ├── file_system_manager.py
-│   └── error_handler.py
+│   ├── content_processor.py
+│   ├── storage_manager.py
+│   ├── monitoring_handler.py
+│   └── main.py
+├── plugins/
+│   ├── __init__.py
+│   ├── mcp_plugin.py
+│   └── pydantic_plugin.py
 ├── tests/
 │   ├── __init__.py
 │   ├── test_config_manager.py
 │   ├── test_web_crawler.py
 │   └── ... (tests for each component)
-├── MCP_DOCS/               # Output directory example for MCP documentation
+├── docs/
+│   ├── README.md
+│   └── plugin_guide.md
 ├── .gitignore
-├── README.md
-├── pyproject.toml          # Project metadata and dependencies
-└── main.py                 # Entry point
+├── pyproject.toml
+└── main.py
 ```
 
 ## Configuration Format
@@ -97,6 +132,7 @@ The configuration file (YAML) will include:
 site:
   name: "ModelContextProtocol"
   base_url: "https://modelcontextprotocol.io"
+  plugin: "mcp_plugin"  # Name of the plugin to use
   
 crawling:
   include_patterns:
@@ -106,7 +142,7 @@ crawling:
   max_depth: 5
   rate_limit: 1  # requests per second
   
-extraction:
+processing:
   content_selector: "main.content"
   title_selector: "h1.title"
   ignore_selectors:
