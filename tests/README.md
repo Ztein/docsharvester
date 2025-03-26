@@ -2,66 +2,107 @@
 
 This directory contains tests for the MCP Documentation Scraper project. The tests are organized by component to match the project structure.
 
-## Test Structure
+## Test Environment Setup
 
-- `config_manager/`: Tests for the configuration manager component
-- `web_crawler/`: Tests for the web crawler component
-- `content_extractor/`: Tests for the content extraction component
-- `markdown_converter/`: Tests for the HTML to Markdown conversion component
-- `link_handler/`: Tests for the link processing component
-- `file_system_manager/`: Tests for the file system operations component
-- `error_handler/`: Tests for the error handling component
-- `conftest.py`: Shared pytest fixtures for all tests
-- `test_utils.py`: Utility functions and classes for testing
+1. Ensure you're in the virtual environment:
+   ```bash
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
 
-## Fixtures
-
-Common test fixtures are defined in `conftest.py` and can be used in any test file:
-
-- `mock_config`: A mock implementation of the ConfigManager with default configuration
-- `custom_mock_config`: A configurable mock ConfigManager
-- `temp_dir`: A temporary directory that is cleaned up after the test
-- `test_file_manager`: A utility for managing test files and directories
-- `sample_html`: Sample HTML content for testing
-- `sample_markdown`: Sample Markdown content for testing
-- `sample_content_dict`: A sample content dictionary for testing
+2. Install test dependencies:
+   ```bash
+   pip install -e ".[dev]"
+   ```
 
 ## Running Tests
 
-To run all tests:
-
+Common test commands:
 ```bash
-pytest
+# Run all tests
+python -m pytest
+
+# Run with verbose output (recommended)
+python -m pytest -v
+
+# Run specific component tests
+python -m pytest tests/component_name/
+
+# Run a specific test file
+python -m pytest tests/component_name/test_file.py
+
+# Run a specific test case
+python -m pytest tests/component_name/test_file.py::TestClass::test_method
+
+# Generate coverage report
+python -m pytest --cov=mcp_doc_getter tests/
 ```
 
-To run tests for a specific component:
+## Project Test Structure
 
-```bash
-pytest tests/component_name/
+```
+tests/
+├── config_manager/      # Configuration management tests
+├── content_extractor/   # HTML content extraction tests
+├── error_handler/       # Error handling and logging tests
+├── file_system_manager/ # File operations tests
+├── integration/         # End-to-end integration tests
+├── link_handler/        # Link processing tests
+├── markdown_converter/  # HTML to Markdown conversion tests
+├── validation/          # Content validation tests
+├── web_crawler/        # Web crawling tests
+├── conftest.py         # Shared pytest fixtures
+├── test_utils.py       # Test utilities
+└── test_mcp_specific.py # MCP-specific functionality tests
 ```
 
-To run tests with output:
+## Available Fixtures
 
-```bash
-pytest -v
+Common test fixtures in `conftest.py`:
+
+```python
+# Example usage of fixtures
+def test_content_extraction(mock_config, sample_html):
+    extractor = ContentExtractor(mock_config)
+    content = extractor.extract(sample_html)
+    assert content is not None
 ```
+
+Key fixtures:
+- `mock_config`: Pre-configured ConfigManager with default settings
+- `custom_mock_config`: Configurable mock ConfigManager
+- `temp_dir`: Temporary directory that's automatically cleaned up
+- `sample_html`: Sample HTML content for testing
+- `sample_markdown`: Sample Markdown content for testing
+- `sample_content_dict`: Sample content dictionary
 
 ## Test Utilities
 
-The `test_utils.py` file provides useful utilities for tests:
+`test_utils.py` provides:
+- `MockConfigManager`: Configurable configuration mock
+- `TestFileManager`: File and directory management utilities
+- `DEFAULT_CONFIG`: Default test configuration values
 
-- `MockConfigManager`: A configurable mock for the ConfigManager
-- `TestFileManager`: A utility for managing test files and directories
-- `DEFAULT_CONFIG`: Default configuration values for testing
+## Writing New Tests
 
-## Writing Tests
-
-When writing new tests:
-
-1. Place them in the appropriate component directory
-2. Use fixtures from `conftest.py` where possible
-3. Follow the existing naming conventions
+1. Place tests in the appropriate component directory
+2. Use existing fixtures from `conftest.py` when possible
+3. Follow the naming pattern: `test_<functionality>.py`
 4. Include docstrings for test classes and methods
-5. Use test-driven development where appropriate
+5. Use descriptive test names that explain the test case
 
-For components without implementation yet, tests should be marked with `@unittest.skip("Implementation pending")` and include commented expectations for when the implementation is available. 
+Example:
+```python
+def test_extract_content_with_missing_selector(mock_config):
+    """Test that content extraction handles missing CSS selectors gracefully."""
+    extractor = ContentExtractor(mock_config)
+    result = extractor.extract("<html><body>Test</body></html>")
+    assert result.get('content') == "Test"
+```
+
+## Skipped Tests
+
+Some integration tests are currently skipped as they require implementation:
+- `test_full_pipeline_integration`
+- `test_scrape_single_page`
+
+These tests will be enabled as the corresponding functionality is implemented. 

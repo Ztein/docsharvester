@@ -1,0 +1,40 @@
+site:
+  name: "Test Documentation"
+  base_url: "https://example-docs.com"
+
+crawling:
+  # Basic rate limiting to be a good citizen
+  delay_between_requests: 2
+  respect_robots_txt: true
+  # Default timeout for network requests
+  timeout: 10
+
+extraction:
+  selectors:
+    content: "body"
+    title: "h1"
+    navigation: "nav"
+  exclude:
+    - "footer"
+    - "header"
+    - ".sidebar"
+
+output:
+  format: "markdown"
+  directory: "docs"
+  file_extension: ".md"
+  preserve_hierarchy: true
+
+conversion:
+  include_metadata: true
+  html2text_options:
+    # Disable width limit for better Markdown formatting
+    body_width: 0
+    # Preserve Unicode characters
+    unicode_snob: true
+    # Enable table conversion
+    tables: true
+    # Better Markdown formatting
+    single_line_break: true
+  code_block_style: "fenced"
+  table_style: "pipe" 

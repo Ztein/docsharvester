@@ -19,6 +19,7 @@ dependencies = [
     "pyyaml>=6.0",
     "html2text>=2020.1.16",
     "reppy>=0.4.14",
+    "psutil>=5.9.0",
 ]
 
 [project.optional-dependencies]
